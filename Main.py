@@ -165,7 +165,10 @@ def runForSingle(a, b, size, isSave, isShowing):
             txt +="to many different loop to show"
         else :
             for i in loopingList:
-                txt += str(i)+"\n"
+                if(len(i)>11):
+                    txt += "{0}...{1}\n".format(str(i[0:5]), str(i[6:-1]))
+                else :
+                    txt += str(i)+"\n"
         plt.text(0.05, 0.1, txt, dict(size=10))
         plt.axis('off')
         plt.title("Data")
@@ -174,10 +177,12 @@ def runForSingle(a, b, size, isSave, isShowing):
         #Show and save
         if isShowing :
             plt.show()
-        if isSave :
+        if isSave and validity>40:
             fileName = "img/{0}.png".format(name)
             fig.set_size_inches((10, 7), forward=False)
             fig.savefig(fileName)
+        if isSave and validity<40:
+            print("Only a validity of {0} for {1}".format(validity, name))
 
 def flatten(t):
     return [item for sublist in t for item in sublist]

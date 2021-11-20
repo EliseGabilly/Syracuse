@@ -24,7 +24,7 @@ class Syracuse:
     """
         Apply the Syracuse-like function to n and return the list of value generated
         exemple : n=6 for a=3 and b=1 will return [6, 3, 10, 5, 16, 8, 4, 2, 1, 4]
-        note : return an empty list if it doesn't loop after 500 step
+        note : stop after 500 step
     """
     def listAllVal(self, n):
         listVal=[n]
@@ -32,8 +32,6 @@ class Syracuse:
         while((not listVal.__contains__(next)) and len(listVal)<=500 ):
             listVal.append(next)
             next=self.oneStep(next)
-        if(len(listVal)==500):
-            return []
         listVal.append(next)
         return listVal
 
@@ -52,19 +50,26 @@ class Syracuse:
             tab.append(row)
         return tab
 
+    """
+        return the loop list present in a table
+        exemple : loop list of [[6, 3, 10, 5, 16, 8, 4, 2, 1, 4]] will return [[4, 2, 1, 4]]
+    """
     def listLoop(self, tab):
         res = []
         l = tab[0]
         temp = l[l.index(l[-1]) : len(l)] #list loop for 1
+        seen = []
+        seen += temp 
         res.append([int(x) for x in temp])
         
         for i in range(len(tab)):
             l = tab[i]
-            if(not l):
-                pass
+            if(len(l)>=500):
+                continue    
             stopVal = l[-1]
-            if(not temp.__contains__(stopVal)):
+            if(not seen.__contains__(stopVal)):
                 temp = l[l.index(l[-1]) : len(l)]
+                seen += temp 
                 res.append([int(x) for x in temp])
         return res
 
@@ -87,7 +92,7 @@ class Syracuse:
         exemple : for [6, 3, 10, 5, 16, 8, 4, 2, 1, 4] will return 9
     """
     def flyingTime(self, l):
-        if not l:
+        if len(l)>=500:
             return np.NaN
         return len(l)-1
 
@@ -96,7 +101,7 @@ class Syracuse:
         exemple : for [6, 3, 10, 5, 16, 8, 4, 2, 1, 4] will return 3
     """
     def loopSize(self, l):
-        if not l:
+        if len(l)>=500:
             return np.NaN
         return len(l)-l.index(l[-1])
 
@@ -105,7 +110,7 @@ class Syracuse:
         exemple : for [6, 3, 10, 5, 16, 8, 4, 2, 1, 4] will return 4
     """
     def stopingVal(self, l):
-        if not l:
+        if len(l)>=500:
             return np.NaN
         return l[-1]
  
@@ -114,7 +119,7 @@ class Syracuse:
         exemple : for [6, 3, 10, 5, 16, 8, 4, 2, 1, 4] will return 16
     """
     def highestVal(self, l):
-        if not l:
+        if len(l)>=500:
             return np.NaN
         return max(l)
 
