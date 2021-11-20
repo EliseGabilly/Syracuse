@@ -53,7 +53,12 @@ class Syracuse:
         return tab
 
     def listLoop(self, tab):
-        return null
+        res = []
+        for i in tab:
+            if(not i):
+                pass
+            next=self.oneStep(i[-1])
+        return res
 
     """
         Apply func to every element of tab
@@ -85,8 +90,7 @@ class Syracuse:
     def loopSize(self, l):
         if not l:
             return np.NaN
-        next=self.oneStep(l[-1])
-        return len(l)-l.index(next)
+        return len(l)-l.index(l[-1])
 
     """
         stopingVal : if you want to know the first value that repeat
