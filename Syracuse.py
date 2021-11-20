@@ -6,6 +6,11 @@ class Syracuse:
         self.a=3
         self.b=1
     
+    """
+        Apply ont step of the Syracuse-like function :
+        (if mod 2) f(x) = x/2
+        (else) f(x) = ax+b 
+    """
     def oneStep(self, n):
         res=0
         if (n%2==0):
@@ -14,10 +19,14 @@ class Syracuse:
             res=self.a*n+self.b
         return res
 
+    """
+        Apply the Syracuse-like function to n and return the list of value generated
+        exemple : n=7 for a=3 and b=1 will return [7, 11, 17, 13, 5, 1, 4, 2, 1]
+    """
     def listAllVal(self, n):
         listVal=[n]
         next=self.oneStep(n)
-        while(not listVal.__contains__(next)):
+        while((not listVal.__contains__(next)) and len(listVal)<=500 ):
             listVal.append(next)
             next=self.oneStep(next)
         return listVal
@@ -48,16 +57,25 @@ class Syracuse:
                 tab[row][elem]=func(tab[row][elem])
         return(tab)
 
-    #flyingTime : if you want to know how long before the function loop
+    """
+        flyingTime : if you want to know how long before the function loop
+        exemple : for [7, 11, 17, 13, 5, 1, 4, 2, 1] will return 9
+    """
     def flyingTime(self, l):
-        return len(l)
+        return len(l)-1
 
-    #loopSize : if you want to know the size of the loop
+    """
+        loopSize : if you want to know the size of the loop
+        exemple : for [7, 11, 17, 13, 5, 1, 4, 2, 1] will return 3
+    """
     def loopSize(self, l):
         next=self.oneStep(l[-1])
         return len(l)-l.index(next)
 
-    #stopingVal : if you want to know the first value to repeat
+    """
+        stopingVal : if you want to know the first value that repeat
+        exemple : for [7, 11, 17, 13, 5, 1, 4, 2, 1] will return 1
+    """
     def stopingVal(self, l):
         return l[-1]
 

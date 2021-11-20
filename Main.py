@@ -10,6 +10,13 @@ def chooseSetup():
             if(userInput=="m"):
                 isMultiple = True
             break
+    isShowing = False
+    while True :
+        userInput = input("Show the matrix ? (y/n) ")
+        if(userInput=="n" or userInput=="y"):
+            if(userInput=="y"):
+                isShowing = True
+            break
 
     if(isMultiple):
         print("Number of syracuze-like function run (your input is squared, advice 10)")
@@ -47,7 +54,7 @@ def chooseSetup():
                 if(userInput=="y"):
                     isSaveEvery = True
                 break
-        runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery)
+        runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery, isShowing)
     else :
         print("Default values :")
         print("     ax+b where a=3 and b=1")
@@ -95,27 +102,26 @@ def chooseSetup():
                 if(userInput=="y"):
                     isSave = True
                 break
-        runForSingle(a, b, size, isSave)
+        runForSingle(a, b, size, isSave, isShowing)
 
-def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery):
+def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery, isShowing):
     print("todo mul")
 
-def runForSingle(a, b, size, isSave):
-    print("todo sigle")
+def runForSingle(a, b, size, isSave, isShowing):
+    mySyracuse= Syracuse(a, b)
+    theTab=mySyracuse.table(size)
+    theTabVol = mySyracuse.tableThroughtFunc(mySyracuse.flyingTime, theTab)
+    theMatrixVol = np.array(theTabVol)
+    print(theMatrixVol)
+
+    plt.imshow(theMatrixVol)
+    if isShowing :
+        plt.show()
+    if isSave :
+        fileName = "img/{0}x+{1}.png".format(a, b)
+        plt.savefig(fileName)
+
 
 
 if __name__ == '__main__':
     chooseSetup()
-    """
-    a=3
-    b=1
-    mySyracuse= Syracuse(a, b)
-    size=10
-    theTab=mySyracuse.table(10)
-    theTabVol = mySyracuse.tableThroughtFunc(mySyracuse.tempsDeVol, theTab)
-    theMatrixVol = np.array(theTabVol)
-    plt.imshow(theMatrixVol)
-    #plt.colorbar()
-    plt.show()
-    print(theMatrixVol)
-    """
