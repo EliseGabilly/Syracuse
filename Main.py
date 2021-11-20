@@ -11,13 +11,6 @@ def chooseSetup():
             if(userInput=="m"):
                 isMultiple = True
             break
-    isShowing = False
-    while True :
-        userInput = input("Show the matrix ? (y/n) ")
-        if(userInput=="n" or userInput=="y"):
-            if(userInput=="y"):
-                isShowing = True
-            break
 
     if(isMultiple):
         print("Number of syracuze-like function run (your input is squared, advice 10)")
@@ -55,8 +48,22 @@ def chooseSetup():
                 if(userInput=="y"):
                     isSaveEvery = True
                 break
-        runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery, isShowing)
+        runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery)
     else :
+        isShowing = False
+        while True :
+            userInput = input("Show the output plot ? (y/n) ")
+            if(userInput=="n" or userInput=="y"):
+                if(userInput=="y"):
+                    isShowing = True
+                break
+        isSave = False
+        while True :
+            userInput = input("Save output plot ? (y/n) ")
+            if(userInput=="y" or userInput=="n"):
+                if(userInput=="y"):
+                    isSave = True
+                break
         print("Default values :")
         print("     ax+b where a=3 and b=1")
         print("     output a 10*10 table")
@@ -96,16 +103,9 @@ def chooseSetup():
                     continue
                 else:
                     break
-        isSave = False
-        while True :
-            userInput = input("Save matrix output ? (y/n) ")
-            if(userInput=="y" or userInput=="n"):
-                if(userInput=="y"):
-                    isSave = True
-                break
         runForSingle(a, b, size, isSave, isShowing)
 
-def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery, isShowing):
+def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery):
     print("todo mul")
 
 def runForSingle(a, b, size, isSave, isShowing):
@@ -161,7 +161,7 @@ def runForSingle(a, b, size, isSave, isShowing):
         loopingList = mySyracuse.listLoop(flatten(theTab))
         txt +="\nLooping lists ({0}): \n".format(len(loopingList))
         for i in loopingList:
-            txt += i+"\n"
+            txt += str(i)+"\n"
         plt.text(0.05, 0.1, txt, dict(size=10))
         plt.axis('off')
         plt.title("Data")
