@@ -166,7 +166,7 @@ def runForSingle(a, b, size, isSave, isShowing):
         else :
             for i in loopingList:
                 if(len(i)>11):
-                    txt += "{0}...{1}\n".format(str(i[0:5]), str(i[6:-1]))
+                    txt += "'{2}' {0}...{1}\n".format(str(i[0:5]), str(i[-6:-1]), len(i))
                 else :
                     txt += str(i)+"\n"
         plt.text(0.05, 0.1, txt, dict(size=10))
@@ -177,12 +177,12 @@ def runForSingle(a, b, size, isSave, isShowing):
         #Show and save
         if isShowing :
             plt.show()
-        if isSave and validity>40:
+            if isSave and validity<10:
+                print("Only a validity of {0} for {1}".format(validity, name))
+        if isSave and validity>10:
             fileName = "img/{0}.png".format(name)
             fig.set_size_inches((10, 7), forward=False)
             fig.savefig(fileName)
-        if isSave and validity<40:
-            print("Only a validity of {0} for {1}".format(validity, name))
 
 def flatten(t):
     return [item for sublist in t for item in sublist]
