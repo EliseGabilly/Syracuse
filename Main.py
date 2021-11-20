@@ -153,15 +153,19 @@ def runForSingle(a, b, size, isSave, isShowing):
 
         #fig 6 - Data
         fig.add_subplot(2, 3, 6)
-        txt = "Valid data : {0}%\n\n".format(100)
+        validity = (len(fTabVol) - fTabVol.count(np.NaN))/len(fTabVol)*100
+        txt = "Valid data : {0}%\n\n".format(validity)
         txt += "Highest flying time : {0}\n".format(max(fTabVol))
         txt += "Average flying time : {0}\n".format(average(fTabVol))
         txt += "Highest value : {0}\n".format(max(fTabHigh))
         txt += "Average highest value : {0}\n\n".format(average(fTabHigh))
         loopingList = mySyracuse.listLoop(flatten(theTab))
         txt +="\nLooping lists ({0}): \n".format(len(loopingList))
-        for i in loopingList:
-            txt += str(i)+"\n"
+        if(len(loopingList)>5):
+            txt +="to many different loop to show"
+        else :
+            for i in loopingList:
+                txt += str(i)+"\n"
         plt.text(0.05, 0.1, txt, dict(size=10))
         plt.axis('off')
         plt.title("Data")
