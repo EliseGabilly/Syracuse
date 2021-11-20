@@ -1,3 +1,4 @@
+from numpy.lib.function_base import average
 from Syracuse import *
 import matplotlib.pyplot as plt
 import numpy as np
@@ -109,19 +110,72 @@ def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery, isShowing)
 
 def runForSingle(a, b, size, isSave, isShowing):
     mySyracuse= Syracuse(a, b)
-    theTab=mySyracuse.table(size)
-    theTabVol = mySyracuse.tableThroughtFunc(mySyracuse.flyingTime, theTab)
-    theMatrixVol = np.array(theTabVol)
-    print(theMatrixVol)
+    theTab=mySyracuse.syracuseTable(size)
 
-    plt.imshow(theMatrixVol)
-    if isShowing :
-        plt.show()
-    if isSave :
-        fileName = "img/{0}x+{1}.png".format(a, b)
-        plt.savefig(fileName)
+    if isSave or isShowing :
+        name = "{0}x+{1}_{2}".format(a, b, size)
+        #create figure
+        fig = plt.figure()
+        plt.suptitle(name)
+
+        #fig 1 - flying time
+        theTabVol = mySyracuse.tableThroughtFunc(mySyracuse.flyingTime, theTab)
+        theMatrixVol = np.array(theTabVol)
+        fig.add_subplot(2, 3, 1)
+        plt.imshow(theMatrixVol)
+        plt.title("Flying time")
+
+        #fig 2 - Highest Val
+        theTabHigh = mySyracuse.tableThroughtFunc(mySyracuse.highestVal, theTab)
+        theMatrixHigh = np.array(theTabHigh)
+        fig.add_subplot(2, 3, 2)
+        plt.imshow(theMatrixHigh)
+        plt.title("Highest value")
+
+        #fig 3 - Stoping value
+        theTabStop = mySyracuse.tableThroughtFunc(mySyracuse.stopingVal, theTab)
+        theMatrixStop = np.array(theTabStop)
+        fig.add_subplot(2, 3, 3)
+        plt.imshow(theMatrixStop)
+        plt.title("Stoping value")
+
+        #fig 4 - Flying time
+        fTabVol = flatten(theTabVol)
+        fig.add_subplot(2, 3, 4)
+        plt.plot(range(1, len(fTabVol)+1), fTabVol, '.')
+        plt.title("Flying time")
+
+        #fig 5 - Highest Val
+        fTabHigh = flatten(theTabHigh)
+        fig.add_subplot(2, 3, 5)
+        plt.plot(range(1, len(fTabHigh)+1), fTabHigh, '.')
+        plt.title("Highest value")
+
+        #fig 6 - Data
+        fig.add_subplot(2, 3, 6)
+        txt = "Valid data : {0}%".format(100, [1, 2, 4])
+        txt = txt.join("Highest flying time : {0}".format(max(fTabVol)))
+        txt = txt.join("Average flying time : {0}".format(average(fTabVol)))
+        txt = txt.join("Highest value : {0}".format(max(theTabHigh)))
+        txt = txt.join("Average highest value : {0}".format(average(theTabHigh)))
+        loopingList = mySyracuse.listLoop(flatten(theTab))
+        txt = txt.join("\nLooping lists ({0}): \n".format(len(loopingList)))
+        for i in loopingList:
+            txt = txt.join(i+"\n")
+        plt.text(0.05, 0.9, txt, dict(size=10))
+        plt.axis('off')
+        plt.title("Data")
 
 
+        #Show and save
+        if isShowing :
+            plt.show()
+        if isSave :
+            fileName = "img/{0}.png".format(name)
+            plt.savefig(fileName)
+
+def flatten(t):
+    return [item for sublist in t for item in sublist]
 
 if __name__ == '__main__':
     chooseSetup()
