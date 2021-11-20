@@ -47,17 +47,25 @@ class Syracuse:
         for i in range(size):
             row=[]
             for j in range(size):
-                l = self.listAllVal(size*i+j+1)
+                l = self.listAllVal(size*i+j+1.0)
                 row.append(l)
             tab.append(row)
         return tab
 
     def listLoop(self, tab):
         res = []
-        for i in tab:
-            if(not i):
+        l = tab[0]
+        temp = l[l.index(l[-1]) : len(l)] #list loop for 1
+        res.append([int(x) for x in temp])
+        
+        for i in range(len(tab)):
+            l = tab[i]
+            if(not l):
                 pass
-            next=self.oneStep(i[-1])
+            stopVal = l[-1]
+            if(not temp.__contains__(stopVal)):
+                temp = l[l.index(l[-1]) : len(l)]
+                res.append([int(x) for x in temp])
         return res
 
     """
