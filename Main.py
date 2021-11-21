@@ -305,19 +305,19 @@ def runForSingle(a, b, size, isSave, isShowing):
         #fig 1 - flying time
         theTabVol = mySyracuse.tableThroughtFunc(mySyracuse.flyingTime, theTab)
         theMatrixVol = np.array(theTabVol)
-        axs[0][0].imshow(theMatrixVol)
+        axs[0][0].imshow(theMatrixVol, extent=[0.5, size+0.5, size+0.5, 0.5])
         axs[0][0].set_title("Flying time")
 
         #fig 2 - Highest Val
         theTabHigh = mySyracuse.tableThroughtFunc(mySyracuse.highestVal, theTab)
         theMatrixHigh = np.array(theTabHigh)
-        axs[0][1].imshow(theMatrixHigh)
+        axs[0][1].imshow(theMatrixHigh, extent=[0.5, size+0.5, size+0.5, 0.5])
         axs[0][1].set_title("Highest value")
 
         #fig 3 - Stoping value
         theTabStop = mySyracuse.tableThroughtFunc(mySyracuse.stopingVal, theTab)
         theMatrixStop = np.array(theTabStop)
-        axs[0][2].imshow(theMatrixStop)
+        axs[0][2].imshow(theMatrixStop, extent=[0.5, size+0.5, size+0.5, 0.5])
         axs[0][2].set_title("Stoping value")
 
         #fig 4 - Flying time
