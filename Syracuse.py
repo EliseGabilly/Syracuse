@@ -6,6 +6,10 @@ class Syracuse:
     def __init__(self, a, b):
         self.a=a
         self.b=b
+
+    def updateAB(self, a, b):
+        self.a=a
+        self.b=b
     
     """
         Apply ont step of the Syracuse-like function :
