@@ -15,6 +15,7 @@ def chooseSetup():
     if(isMultiple):
         print("Number of syracuze-like function run (your input is squared, advice 10)")
         print("That will test every function of the form ax+b with a and b between 0 and and input")
+        print("With a size over 1 only the visual data recap will be generated")
         multipleSize = 0
         while True:
             try:
@@ -107,18 +108,26 @@ def chooseSetup():
 
 def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery):
     #create figures
-    figFlying, axsFlying = plt.subplots(multipleSize, multipleSize+1)
-    figFlying.suptitle("Flying")
-    figHighest, axsHighest = plt.subplots(multipleSize, multipleSize+1)
-    figHighest.suptitle("Highest")
-    figStoping, axsStoping = plt.subplots(multipleSize, multipleSize+1)
-    figStoping.suptitle("Stoping")
-    figFlyingPlot, axsFlyingPlot = plt.subplots(multipleSize, multipleSize+1)
-    figFlyingPlot.suptitle("FlyingPlot")
-    figHighestPlot, axsHighestPlot = plt.subplots(multipleSize, multipleSize+1)
-    figHighestPlot.suptitle("HighestPlot")
-    figData, axsData = plt.subplots(multipleSize, multipleSize+1)
-    figData.suptitle("Data")
+    if(multipleSize<=10):
+        print("Subplot creation -")
+        print("     - Flying time heatmap")
+        figFlying, axsFlying = plt.subplots(multipleSize, multipleSize+1)
+        figFlying.suptitle("Flying time heatmap")
+        print("     - Highest value heatmap")
+        figHighest, axsHighest = plt.subplots(multipleSize, multipleSize+1)
+        figHighest.suptitle("Highest value heatmap")
+        print("     - Stoping value heatmap")
+        figStoping, axsStoping = plt.subplots(multipleSize, multipleSize+1)
+        figStoping.suptitle("Stoping value heatmap")
+        print("     - Flying time plot")
+        figFlyingPlot, axsFlyingPlot = plt.subplots(multipleSize, multipleSize+1)
+        figFlyingPlot.suptitle("Flying time plot")
+        print("     - Highest value plot")
+        figHighestPlot, axsHighestPlot = plt.subplots(multipleSize, multipleSize+1)
+        figHighestPlot.suptitle("Highest value plot")
+        print("     - Written data")
+        figData, axsData = plt.subplots(multipleSize, multipleSize+1)
+        figData.suptitle("Written data")
 
     #HeatMap recap
     hpValidity = np.empty((multipleSize, multipleSize))
@@ -130,42 +139,48 @@ def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery):
     hpNbLoop = np.empty((multipleSize, multipleSize))
     hpNbLoop[:] = np.NaN
 
+    print("start loop")
     for a in range(1, multipleSize+1):
         mySyracuse= Syracuse(0, 0)
         print("a = {0}".format(a))
         for b in range(1, multipleSize+1):
             mySyracuse.updateAB(a, b)
-            print("     b = {0}".format(b))
+            #print("     b = {0}".format(b))
             oneTab = runForSingle(a, b, valueSize, isSaveEvery, False) #isShowing set to false as we doesn't want to open too much window
             
             #Heat map
             #flying time
             theTabVol = mySyracuse.tableThroughtFunc(mySyracuse.flyingTime, oneTab)
-            theMatrixVol = np.array(theTabVol)
-            axsFlying[b-1][a].imshow(theMatrixVol)
-            axsFlying[b-1][a].axis('off')
+            if(multipleSize<=10):
+                theMatrixVol = np.array(theTabVol)
+                axsFlying[b-1][a].imshow(theMatrixVol)
+                axsFlying[b-1][a].axis('off')
             #Highest Val
             theTabHigh = mySyracuse.tableThroughtFunc(mySyracuse.highestVal, oneTab)
-            theMatrixHigh = np.array(theTabHigh)
-            axsHighest[b-1][a].imshow(theMatrixHigh)
-            axsHighest[b-1][a].axis('off')
+            if(multipleSize<=10):
+                theMatrixHigh = np.array(theTabHigh)
+                axsHighest[b-1][a].imshow(theMatrixHigh)
+                axsHighest[b-1][a].axis('off')
             #Stoping value
             theTabStop = mySyracuse.tableThroughtFunc(mySyracuse.stopingVal, oneTab)
-            theMatrixStop = np.array(theTabStop)
-            axsStoping[b-1][a].imshow(theMatrixStop)
-            axsStoping[b-1][a].axis('off')
+            if(multipleSize<=10):
+                theMatrixStop = np.array(theTabStop)
+                axsStoping[b-1][a].imshow(theMatrixStop)
+                axsStoping[b-1][a].axis('off')
 
             #Plot
             #flying time
             fTabVol = flatten(theTabVol)
-            axsFlyingPlot[b-1][a].plot(range(1, len(fTabVol)+1), fTabVol, 'o', markersize=0.5)
-            axsFlyingPlot[b-1][a].set_xticks([])
-            axsFlyingPlot[b-1][a].set_yticks([])
+            if(multipleSize<=10):
+                axsFlyingPlot[b-1][a].plot(range(1, len(fTabVol)+1), fTabVol, 'o', markersize=0.5)
+                axsFlyingPlot[b-1][a].set_xticks([])
+                axsFlyingPlot[b-1][a].set_yticks([])
             #Highest Val
             fTabHigh = flatten(theTabHigh)
-            axsHighestPlot[b-1][a].plot(range(1, len(fTabHigh)+1), fTabHigh, 'o', markersize=0.5)
-            axsHighestPlot[b-1][a].set_xticks([])
-            axsHighestPlot[b-1][a].set_yticks([])
+            if(multipleSize<=10):
+                axsHighestPlot[b-1][a].plot(range(1, len(fTabHigh)+1), fTabHigh, 'o', markersize=0.5)
+                axsHighestPlot[b-1][a].set_xticks([])
+                axsHighestPlot[b-1][a].set_yticks([])
 
             #Data
             validity = (len(fTabVol) - fTabVol.count(np.NaN))/len(fTabVol)*100
@@ -187,56 +202,58 @@ def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery):
                 hpHigh[b-1][a-1] = max(fTabHigh)
                 hpNbLoop[b-1][a-1] = len(loopingList)
                 
-            axsData[b-1][a].text(0.05, 0.1, txt, dict(size=10))
-            axsData[b-1][a].axis('off')
+            if(multipleSize<=10):
+                axsData[b-1][a].text(0.05, 0.1, txt, dict(size=10))
+                axsData[b-1][a].axis('off')
 
-    #add title to columns and rows
-    cols = ['']+['A = {}'.format(col) for col in range(1, multipleSize+1)]
-    rows = ['B = {}'.format(row) for row in range(1, multipleSize+1)]
-    #Flying time
-    for ax, col in zip(axsFlying[0], cols):
-        ax.set_title(col)
-    for ax, row in zip(axsFlying[:,0], rows):
-        ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
-        ax.axis('off')
-    figFlying.tight_layout()
-    #Highest value
-    for ax, col in zip(axsHighest[0], cols):
-        ax.set_title(col)
-    for ax, row in zip(axsHighest[:,0], rows):
-        ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
-        ax.axis('off')
-    figHighest.tight_layout()
-    #Stoping value
-    for ax, col in zip(axsStoping[0], cols):
-        ax.set_title(col)
-    for ax, row in zip(axsStoping[:,0], rows):
-        ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
-        ax.axis('off')
-    figStoping.tight_layout()
-    #Flying time plot
-    for ax, col in zip(axsFlyingPlot[0], cols):
-        ax.set_title(col)
-    for ax, row in zip(axsFlyingPlot[:,0], rows):
-        ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
-        ax.axis('off')
-    figFlyingPlot.tight_layout()
-    #Highest value
-    for ax, col in zip(axsHighestPlot[0], cols):
-        ax.set_title(col)
-    for ax, row in zip(axsHighestPlot[:,0], rows):
-        ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
-        ax.axis('off')
-    figHighestPlot.tight_layout()
-    #Highest value
-    for ax, col in zip(axsData[0], cols):
-        ax.set_title(col)
-    for ax, row in zip(axsData[:,0], rows):
-        ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
-        ax.axis('off')
-    figData.tight_layout()
+    if(multipleSize<=10):
+        #add title to columns and rows
+        cols = ['']+['A = {}'.format(col) for col in range(1, multipleSize+1)]
+        rows = ['B = {}'.format(row) for row in range(1, multipleSize+1)]
+        #Flying time
+        for ax, col in zip(axsFlying[0], cols):
+            ax.set_title(col)
+        for ax, row in zip(axsFlying[:,0], rows):
+            ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
+            ax.axis('off')
+        figFlying.tight_layout()
+        #Highest value
+        for ax, col in zip(axsHighest[0], cols):
+            ax.set_title(col)
+        for ax, row in zip(axsHighest[:,0], rows):
+            ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
+            ax.axis('off')
+        figHighest.tight_layout()
+        #Stoping value
+        for ax, col in zip(axsStoping[0], cols):
+            ax.set_title(col)
+        for ax, row in zip(axsStoping[:,0], rows):
+            ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
+            ax.axis('off')
+        figStoping.tight_layout()
+        #Flying time plot
+        for ax, col in zip(axsFlyingPlot[0], cols):
+            ax.set_title(col)
+        for ax, row in zip(axsFlyingPlot[:,0], rows):
+            ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
+            ax.axis('off')
+        figFlyingPlot.tight_layout()
+        #Highest value
+        for ax, col in zip(axsHighestPlot[0], cols):
+            ax.set_title(col)
+        for ax, row in zip(axsHighestPlot[:,0], rows):
+            ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
+            ax.axis('off')
+        figHighestPlot.tight_layout()
+        #Highest value
+        for ax, col in zip(axsData[0], cols):
+            ax.set_title(col)
+        for ax, row in zip(axsData[:,0], rows):
+            ax.text(0.9, 0.5, row, dict(size=10), rotation = 90)
+            ax.axis('off')
+        figData.tight_layout()
 
-    if isSaveRecap:
+    if isSaveRecap and multipleSize<=10:
         fileName = "img/recapFlying_{0}_{1}.png".format(multipleSize, valueSize)
         figFlying.set_size_inches((multipleSize*2, multipleSize*2), forward=False)
         figFlying.savefig(fileName)
@@ -282,44 +299,38 @@ def runForSingle(a, b, size, isSave, isShowing):
     if isSave or isShowing :
         name = "{0}x+{1}_{2}".format(a, b, size)
         #create figure
-        fig = plt.figure()
-        plt.suptitle(name)
+        fig, axs = plt.subplots(2, 3)
+        fig.suptitle(name)
 
         #fig 1 - flying time
         theTabVol = mySyracuse.tableThroughtFunc(mySyracuse.flyingTime, theTab)
         theMatrixVol = np.array(theTabVol)
-        fig.add_subplot(2, 3, 1)
-        plt.imshow(theMatrixVol)
-        plt.title("Flying time")
+        axs[0][0].imshow(theMatrixVol)
+        axs[0][0].set_title("Flying time")
 
         #fig 2 - Highest Val
         theTabHigh = mySyracuse.tableThroughtFunc(mySyracuse.highestVal, theTab)
         theMatrixHigh = np.array(theTabHigh)
-        fig.add_subplot(2, 3, 2)
-        plt.imshow(theMatrixHigh)
-        plt.title("Highest value")
+        axs[0][1].imshow(theMatrixHigh)
+        axs[0][1].set_title("Highest value")
 
         #fig 3 - Stoping value
         theTabStop = mySyracuse.tableThroughtFunc(mySyracuse.stopingVal, theTab)
         theMatrixStop = np.array(theTabStop)
-        fig.add_subplot(2, 3, 3)
-        plt.imshow(theMatrixStop)
-        plt.title("Stoping value")
+        axs[0][2].imshow(theMatrixStop)
+        axs[0][2].set_title("Stoping value")
 
         #fig 4 - Flying time
         fTabVol = flatten(theTabVol)
-        fig.add_subplot(2, 3, 4)
-        plt.plot(range(1, len(fTabVol)+1), fTabVol, 'o', markersize=1)
-        plt.title("Flying time")
+        axs[1][0].plot(range(1, len(fTabVol)+1), fTabVol, 'o', markersize=1)
+        axs[1][0].set_title("Flying time")
 
         #fig 5 - Highest Val
         fTabHigh = flatten(theTabHigh)
-        fig.add_subplot(2, 3, 5)
-        plt.plot(range(1, len(fTabHigh)+1), fTabHigh, 'o', markersize=1)
-        plt.title("Highest value")
+        axs[1][1].plot(range(1, len(fTabHigh)+1), fTabHigh, 'o', markersize=1)
+        axs[1][1].set_title("Highest value")
 
         #fig 6 - Data
-        fig.add_subplot(2, 3, 6)
         validity = (len(fTabVol) - fTabVol.count(np.NaN))/len(fTabVol)*100
         txt = "Valid data : {0}%\n\n".format(validity)
         txt += "Highest flying time : {0}\n".format(max(fTabVol))
@@ -336,9 +347,9 @@ def runForSingle(a, b, size, isSave, isShowing):
                     txt += "'{2}' {0}...{1}\n".format(str(i[0:5]), str(i[-6:-1]), len(i))
                 else :
                     txt += str(i)+"\n"
-        plt.text(0.05, 0.1, txt, dict(size=10))
-        plt.axis('off')
-        plt.title("Data")
+        axs[1][2].text(0.05, 0.1, txt, dict(size=10))
+        axs[1][2].axis('off')
+        axs[1][2].set_title("Data")
 
 
         #Show and save
@@ -350,6 +361,7 @@ def runForSingle(a, b, size, isSave, isShowing):
             fileName = "img/{0}.png".format(name)
             fig.set_size_inches((10, 7), forward=False)
             fig.savefig(fileName)
+        plt.close()
     return theTab
 
 def flatten(t):
