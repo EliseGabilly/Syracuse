@@ -26,12 +26,13 @@ A console menu give multiple option on how to run it :
 Individual plot will have an output of the form :
 ![alt text](https://github.com/EliseGabilly/Syracuse/blob/master/main_img/explanation.jpg)
   - The title is a reminder of a, b and size
-  -  I   - Flying time :
-  - II  - Highest value :
-  - III - Stoping value :
-  - IV  - Flying time plot :
-  - V   - Highest value plot :
-  - VI  - Written data :
+  -  I & IV  - Flying time : if you want to know how long before the function loop
+             exemple : for [6, 3, 10, 5, 16, 8, 4, 2, 1, 4] will return 9
+  - II & V   - Highest value : if you want to know the highest value
+             exemple : for [6, 3, 10, 5, 16, 8, 4, 2, 1, 4] will return 16
+  - III      - Stoping value : if you want to know the first value that repeat
+             exemple : for [6, 3, 10, 5, 16, 8, 4, 2, 1, 4] will return 4
+  - VI       - Written data : write previous data and loops
 
 
 Notes :
