@@ -120,6 +120,16 @@ def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery):
     figData, axsData = plt.subplots(multipleSize, multipleSize+1)
     figData.suptitle("Data")
 
+    #HeatMap recap
+    hpValidity = np.empty((multipleSize, multipleSize))
+    hpValidity[:] = np.NaN
+    hpFly = np.empty((multipleSize, multipleSize))
+    hpFly[:] = np.NaN
+    hpHigh = np.empty((multipleSize, multipleSize))
+    hpHigh[:] = np.NaN
+    hpNbLoop = np.empty((multipleSize, multipleSize))
+    hpNbLoop[:] = np.NaN
+
     for a in range(1, multipleSize+1):
         mySyracuse= Syracuse(0, 0)
         print("a = {0}".format(a))
@@ -172,6 +182,11 @@ def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery):
                             txt += "'{2}' {0}...{1}\n".format(str(i[0:3]), str(i[-4:-1]), len(i))
                         else :
                             txt += "'{0}' {1}\n".format(len(i), i)
+                hpValidity[b-1][a-1] = validity
+                hpFly[b-1][a-1] = max(fTabVol)
+                hpHigh[b-1][a-1] = max(fTabHigh)
+                hpNbLoop[b-1][a-1] = len(loopingList)
+                
             axsData[b-1][a].text(0.05, 0.1, txt, dict(size=10))
             axsData[b-1][a].axis('off')
 
@@ -221,27 +236,43 @@ def runForMultiple(multipleSize, valueSize, isSaveRecap, isSaveEvery):
         ax.axis('off')
     figData.tight_layout()
 
-    plt.show()
     if isSaveRecap:
         fileName = "img/recapFlying_{0}_{1}.png".format(multipleSize, valueSize)
-        figFlying.set_size_inches((multipleSize, multipleSize), forward=False)
+        figFlying.set_size_inches((multipleSize*2, multipleSize*2), forward=False)
         figFlying.savefig(fileName)
         fileName = "img/recapHighest_{0}_{1}.png".format(multipleSize, valueSize)
-        figHighest.set_size_inches((multipleSize, multipleSize), forward=False)
+        figHighest.set_size_inches((multipleSize*2, multipleSize*2), forward=False)
         figHighest.savefig(fileName)
         fileName = "img/recapStoping_{0}_{1}.png".format(multipleSize, valueSize)
-        figStoping.set_size_inches((multipleSize, multipleSize), forward=False)
+        figStoping.set_size_inches((multipleSize*2, multipleSize*2), forward=False)
         figStoping.savefig(fileName)
         fileName = "img/recapFlyingPlot_{0}_{1}.png".format(multipleSize, valueSize)
-        figFlyingPlot.set_size_inches((multipleSize, multipleSize), forward=False)
+        figFlyingPlot.set_size_inches((multipleSize*2, multipleSize*2), forward=False)
         figFlyingPlot.savefig(fileName)
         fileName = "img/recapHighestPlot_{0}_{1}.png".format(multipleSize, valueSize)
-        figHighestPlot.set_size_inches((multipleSize, multipleSize), forward=False)
+        figHighestPlot.set_size_inches((multipleSize*2, multipleSize*2), forward=False)
         figHighestPlot.savefig(fileName)
         fileName = "img/recapData_{0}_{1}.png".format(multipleSize, valueSize)
         figData.set_size_inches((multipleSize*2.8, multipleSize*2), forward=False)
         figData.savefig(fileName)
 
+    #Visual data recap
+    figHMR, axsHMR = plt.subplots(2,2) #HMR for heat map recap
+    figHMR.suptitle("Visual data recap")
+    axsHMR[0][0].imshow(hpValidity, extent=[0.5, multipleSize+0.5, multipleSize+0.5, 0.5])
+    axsHMR[0][0].set_title("Validity")
+    axsHMR[0][1].imshow(hpHigh, extent=[0.5, multipleSize+0.5, multipleSize+0.5, 0.5])
+    axsHMR[0][1].set_title("Max Hight")
+    axsHMR[1][0].imshow(hpFly, extent=[0.5, multipleSize+0.5, multipleSize+0.5, 0.5])
+    axsHMR[1][0].set_title("Max fly")
+    axsHMR[1][1].imshow(hpNbLoop, extent=[0.5, multipleSize+0.5, multipleSize+0.5, 0.5])
+    axsHMR[1][1].set_title("Nb Loop")
+
+    plt.show()
+    if isSaveRecap:
+        fileName = "img/visualDataRecap_{0}_{1}.png".format(multipleSize, valueSize)
+        figHMR.set_size_inches((multipleSize*2, multipleSize*2), forward=False)
+        figHMR.savefig(fileName)
 
 
 def runForSingle(a, b, size, isSave, isShowing):
